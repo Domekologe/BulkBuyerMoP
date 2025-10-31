@@ -1,0 +1,16 @@
+## Interface: 50502
+## Title: BulkBuyerMoP
+## Notes: Buy large quantities from vendors by entering a total amount (Alt-Click a merchant item).
+## Author: Domekologe
+## Version: 2.0.5
+## SavedVariables: BulkBuyerMoPDB
+
+# Libs
+libs/embeds.xml
+
+# Locales
+locales/en.lua
+locales/de.lua
+
+# Core
+BulkBuyerMoP.lua
