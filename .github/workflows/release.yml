@@ -1,34 +1,45 @@
-name: Build Release ZIP
+name: Build & Release Addon
 
 on:
   push:
     branches:
-      - "main"
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Read version from TOC
         id: version
         run: |
-          VERSION=$(grep "^## Version:" BulkBuyerMoP/BulkBuyerMoP.toc | sed 's/## Version: //')
+          VERSION=$(grep "^## Version:" BulkBuyerMoP.toc | sed 's/## Version: //')
+          if [ -z "$VERSION" ]; then
+            echo "❌ Version not found in BulkBuyerMoP.toc"
+            exit 1
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Prepare addon folder
+        run: |
+          mkdir BulkBuyerMoP
+          cp BulkBuyerMoP.toc BulkBuyerMoP.lua BulkBuyerMoP/
+          cp -r libs locales BulkBuyerMoP/
 
       - name: Create ZIP
         run: |
-          ZIP_NAME="BulkBuyerMoP-${{ steps.version.outputs.version }}.zip"
-          zip -r "$ZIP_NAME" BulkBuyerMoP \
-            -x "*.git*" \
-            -x "*.github*" \
-            -x "*README*" \
-            -x "*screenshots*"
+          ZIP="BulkBuyerMoP-${{ steps.version.outputs.version }}.zip"
+          zip -r "$ZIP" BulkBuyerMoP
 
-      - name: Upload Release Asset
+      - name: Create or update release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
           files: BulkBuyerMoP-*.zip
