@@ -2,8 +2,8 @@ name: Build Release ZIP
 
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - "main"
 
 jobs:
   build:
