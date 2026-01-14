@@ -2,7 +2,7 @@
 ## Title: BulkBuyerMoP
 ## Notes: Buy large quantities from vendors by entering a total amount (Alt-Click a merchant item).
 ## Author: Domekologe
-## Version: 2.0.6
+## Version: 2.0.7
 ## SavedVariables: BulkBuyerMoPDB
 
 # Libs
