@@ -2,8 +2,8 @@ name: Build & Release WoW Addon
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*"
 
 permissions:
   contents: write
@@ -61,6 +61,22 @@ jobs:
           tag_name: ${{ steps.meta.outputs.version }}
           name: Release ${{ steps.meta.outputs.version }}
           files: "*.zip"
+      - name: Read CHANGELOG
+        id: changelog
+        run: |
+          if [ -f CHANGELOG ]; then
+            CONTENT=$(cat CHANGELOG)
+          elif [ -f CHANGELOG.md ]; then
+            CONTENT=$(cat CHANGELOG.md)
+          else
+            echo "❌ No CHANGELOG file found"
+            exit 1
+          fi
+
+          # GitHub multiline output
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Upload to CurseForge
         uses: itsmeow/curseforge-upload@v3
@@ -72,6 +88,5 @@ jobs:
           game_versions: 14102
           release_type: release
           display_name: "${{ steps.meta.outputs.addon }} ${{ steps.meta.outputs.version }}"
-          changelog: |
-            Automated release from GitHub
+          changelog: ${{ steps.changelog.outputs.content }}
 
