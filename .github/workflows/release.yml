@@ -66,6 +66,7 @@ jobs:
         uses: itsmeow/curseforge-upload@v3
         with:
           token: ${{ secrets.CURSEFORGE_API_TOKEN }}
+          game_endpoint: wow
           project_id: 1338515
           file_path: "${{ steps.meta.outputs.addon }}-${{ steps.meta.outputs.version }}.zip"
           game_versions: 81345
