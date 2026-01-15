@@ -69,7 +69,7 @@ jobs:
           game_endpoint: wow
           project_id: 1338515
           file_path: "${{ steps.meta.outputs.addon }}-${{ steps.meta.outputs.version }}.zip"
-          game_versions: 81345
+          game_versions: 50503
           release_type: release
           display_name: "${{ steps.meta.outputs.addon }} ${{ steps.meta.outputs.version }}"
           changelog: |
