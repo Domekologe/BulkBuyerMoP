@@ -61,3 +61,16 @@ jobs:
           tag_name: ${{ steps.meta.outputs.version }}
           name: Release ${{ steps.meta.outputs.version }}
           files: "*.zip"
+
+      - name: Upload to CurseForge
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          token: ${{ secrets.CURSEFORGE_API_TOKEN }}
+          project_id: 1338515
+          file_path: "${{ steps.meta.outputs.addon }}-${{ steps.meta.outputs.version }}.zip"
+          game_versions: 81345
+          release_type: release
+          display_name: "${{ steps.meta.outputs.addon }} ${{ steps.meta.outputs.version }}"
+          changelog: |
+            Automated release from GitHub
+
